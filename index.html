@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100d2b">
+  <meta name="description" content="STAR CATCH 星星收集：躲開炸彈、接住星星，挑戰最高分！">
+  <title>STAR CATCH｜星星收集</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="stars-bg" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="STAR CATCH 首頁"><span class="brand-mark">✦</span> STAR CATCH</a>
+    <nav>
+      <button class="nav-btn active" data-view="gameView">遊戲</button>
+      <button class="nav-btn" data-view="scoresView">排行榜</button>
+      <button class="nav-btn" data-view="shareView">分享／QR Code</button>
+    </nav>
+    <button id="soundToggle" class="icon-btn" aria-label="切換音效">🔊</button>
+  </header>
+
+  <main class="shell">
+    <section id="gameView" class="view active">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">✨ YOUR LITTLE ARCADE</p>
+          <h1>接住星星，<span>躲開炸彈！</span></h1>
+          <p class="subhead">星星漏接一次就出局，碰到炸彈也會立刻結束。你能拿下幾分？</p>
+        </div>
+        <div class="hero-sticker" aria-hidden="true">🌙<span>⭐</span></div>
+      </div>
+
+      <div class="game-layout">
+        <div class="game-card">
+          <div class="hud">
+            <div class="hud-item"><small>分數</small><strong id="score">000</strong></div>
+            <div class="hud-item"><small>關卡</small><strong id="level">1</strong></div>
+            <div class="hud-item"><small>剩餘時間</small><strong><span id="time">60</span><i>s</i></strong></div>
+            <div class="hud-item best"><small>最高分</small><strong id="best">000</strong></div>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="gameCanvas" width="960" height="600" aria-label="星星收集遊戲畫面"></canvas>
+            <div id="overlay" class="overlay">
+              <div class="overlay-card">
+                <div id="overlayEmoji" class="overlay-emoji">🌟</div>
+                <p class="eyebrow" id="overlayEyebrow">READY PLAYER ONE</p>
+                <h2 id="overlayTitle">準備好收集星星了嗎？</h2>
+                <p id="overlayText">接住所有星星，千萬別漏接！看到炸彈要閃開。</p>
+                <button id="mainAction" class="primary-btn">開始遊戲 <span>→</span></button>
+              </div>
+            </div>
+            <div id="pauseTag" class="pause-tag hidden">⏸ 已暫停</div>
+          </div>
+          <div class="game-controls">
+            <span>⌨️ ← → / A D 移動</span>
+            <span>📱 手機可直接拖曳</span>
+            <button id="pauseBtn" class="text-btn" disabled>暫停</button>
+          </div>
+        </div>
+        <aside class="side-column">
+          <div class="info-card howto">
+            <h3>🎮 遊戲規則</h3>
+            <div class="rule"><span class="rule-icon star">★</span><div><b>接住星星</b><small>每顆 +1 分，連續接住可累積連擊。</small></div></div>
+            <div class="rule"><span class="rule-icon bomb">✹</span><div><b>躲開炸彈</b><small>碰到炸彈，遊戲立即結束。</small></div></div>
+            <div class="rule"><span class="rule-icon miss">!</span><div><b>不能漏接</b><small>任何星星掉到地面就會出局。</small></div></div>
+          </div>
+          <div class="info-card power-card">
+            <h3>💫 特殊道具</h3>
+            <p><span class="power-dot">💎</span> 藍色寶石：額外 +5 分</p>
+            <p><span class="power-dot">🛡️</span> 護盾：短暫擋住一次炸彈</p>
+            <small>道具出現機率不高，看到就把握機會！</small>
+          </div>
+          <div class="tip-card"><span>💡</span><p>小技巧：角色跟著手指移動，提早預判星星落下的位置！</p></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="scoresView" class="view">
+      <div class="page-heading"><p class="eyebrow">HALL OF FAME</p><h1>本機排行榜 🏆</h1><p>成績保存在這台裝置的瀏覽器中。</p></div>
+      <div class="leaderboard-card">
+        <div class="leaderboard-head"><span>名次</span><span>玩家</span><span>分數</span><span>日期</span></div>
+        <div id="scoreRows"></div>
+        <button id="clearScores" class="text-btn danger-text">清除這台裝置的紀錄</button>
+      </div>
+      <p class="privacy-note">注意：這是單一裝置排行榜，不會自動同步到其他玩家或裝置。若要多人共用排行榜，需要另外架設資料庫／後端服務。</p>
+    </section>
+
+    <section id="shareView" class="view">
+      <div class="page-heading"><p class="eyebrow">SHARE THE FUN</p><h1>分享你的遊戲 🔗</h1><p>部署網站後，貼上你的 GitHub Pages 網址，就能在這裡產生 QR Code。</p></div>
+      <div class="share-grid">
+        <div class="share-card">
+          <h2>網站網址</h2>
+          <label for="siteUrl">貼上你發布後的完整網址</label>
+          <input id="siteUrl" type="url" placeholder="https://你的帳號.github.io/你的專案/" autocomplete="url">
+          <button id="makeQr" class="primary-btn">產生 QR Code →</button>
+          <p class="small-note">QR Code 會直接編入你貼上的網址。它本身不會隔天失效；只要網站網址仍有效，就能持續掃描使用。</p>
+        </div>
+        <div class="share-card qr-card">
+          <h2>你的 QR Code</h2>
+          <div id="qrcode" class="qr-placeholder"><span>▦</span><small>輸入網址後產生</small></div>
+          <button id="downloadQr" class="secondary-btn" disabled>下載 QR Code PNG</button>
+        </div>
+      </div>
+      <div class="notice">🔒 網站與遊戲資料由你自己的 GitHub 儲存庫管理。QR Code 是網址的圖像，不是租用的短網址服務。請保留相同的網站網址，不要刪除或更名儲存庫。</div>
+    </section>
+  </main>
+
+  <footer><span>STAR CATCH ✦ 自己的遊戲，自己作主。</span><span>Made for fun ♡</span></footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+  <script src="game.js" defer></script>
+</body>
+</html>
